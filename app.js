@@ -1,6 +1,14 @@
 const express =require('express');
+const bodyParser = require('body-parser');
+const logger = require('morgan');
 
 const app = express();
+
+// mount the middleware
+app.use(bodyParser.urlencoded( { extended: false }));
+app.use(bodyParser.json());
+app.use(logger('tiny'));
+
 
 // Import routes
 const productRoutes = require('./api/routes/products');
