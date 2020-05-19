@@ -1,14 +1,25 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
+
+// Import database model
+const Orders = require('../models/Orders');
+
 
 // Install routes
 
 // POST routes
 router.post('/', (req, res) => {
-    const order = {
+    const order = new Order ({
         productId: req.body.productId,
         quantity: req.body.quantity
-    };
+    });
+    order.save(orders => {
+        console.log(orders);
+    }).catch(error => {
+        console.log(error);
+    });
+
     res.status(201).json({
         "message": "post requests to /order",
         order

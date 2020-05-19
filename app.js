@@ -2,7 +2,7 @@ const express =require('express');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
-const db = require('./api/models/keys');
+const db = require('./api/keys').mongodbURI;
 
 const app = express();
 
@@ -17,7 +17,12 @@ const productRoutes = require('./api/routes/products');
 const orderRoutes = require('./api/routes/orders');
 
 // Setup database
-mongoose.connect(db, {useNewUrlParser: true} )
+mongoose.connect(db, { useNewUrlParser: true,  useUnifiedTopology: true})
+    .then(() => {
+        console.log('connected succesfully');
+    }).catch(error => {
+        console.log(error);
+    });
 
 // Install the routes as middleware. The second argument is a handler
 app.use('/products', productRoutes);

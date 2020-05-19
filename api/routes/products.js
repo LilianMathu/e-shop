@@ -1,14 +1,25 @@
 const express = require('express');
 const router = express.Router();
 
+// Import the database models
+const Product = require('../models/Products');
+
+
 // the routes
 
 // POST route
 router.post('/', (req, res) => {
-    const product = {
+    const product = new Product({
         name: req.body.name,
         price: req.body.price
-    };
+    }); 
+    product.save()
+    .then(result => {
+        console.log(result);
+    }).catch(error => {
+        console.log(error);
+    })
+
     res.status(201).json({
         "message": "successful",
         product
@@ -25,15 +36,15 @@ router.get('/', (req, res) => {
  
 router.get('/:productId', (req, res) => {
     const id = req.params.productId;
-    if(id == 123) {
-        res.status(200).json({
-            "message": "you got it"
-        });
-    } else {
-        res.status(400).json({
-            "message": "object not found"
-        });
-    }
+    Product.findById(id)
+    .exec()
+    .then(product =>{
+        console.log(product);
+        res.status(200).json(product);
+    })
+    .catch(error => {
+        res.status(500).json({error});
+    });
 });
 
 //PATCH route
