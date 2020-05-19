@@ -1,6 +1,8 @@
 const express =require('express');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
+const mongoose = require('mongoose');
+const db = require('./api/models/keys');
 
 const app = express();
 
@@ -13,6 +15,9 @@ app.use(logger('tiny'));
 // Import routes
 const productRoutes = require('./api/routes/products');
 const orderRoutes = require('./api/routes/orders');
+
+// Setup database
+mongoose.connect(db, {useNewUrlParser: true} )
 
 // Install the routes as middleware. The second argument is a handler
 app.use('/products', productRoutes);
