@@ -71,7 +71,7 @@ router.get('/:productId', (req, res) => {
         .then(product => {
             if (product) {
                 res.status(200).json({
-                    message: "successul",
+                    message: "successful",
                     return: {
                         _id: product._id,
                         name: product.name,

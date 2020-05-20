@@ -2,8 +2,14 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const orderSchema = Schema({
-    productId: Number,
-    quantity: Number
+    productId: { 
+        type: Number,
+        required: true
+    },
+    quantity: {
+        type: Number,
+        required: true
+    }
 });
 
 module.exports = mongoose.model('Orders', orderSchema);

@@ -19,7 +19,7 @@ const orderRoutes = require('./api/routes/orders');
 // Setup database
 mongoose.connect(db, { useNewUrlParser: true,  useUnifiedTopology: true})
     .then(() => {
-        console.log('connected succesfully');
+        console.log('connected successfully');
     }).catch(error => {
         console.log(error);
     });
