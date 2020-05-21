@@ -102,7 +102,7 @@ router.patch('/:productId', (req, res) => {
         .exec()
         .then(product => {
             res.status(200).json({
-                message: "successullu updated",
+                message: "successfully updated",
                 return: {
                     _id: product._id,
                         name: product.name,
