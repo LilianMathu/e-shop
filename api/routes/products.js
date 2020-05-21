@@ -83,7 +83,7 @@ router.get('/:productId', (req, res) => {
                     }
                 });
             } else {
-                res.status(404).json({ "message": "Product with that id not found" })
+                res.status(404).json({ "message": "Product with that id not found" });
             }
         })
         .catch(error => {
