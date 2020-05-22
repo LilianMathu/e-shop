@@ -59,6 +59,7 @@ router.post('/', (req, res) => {
 router.get('/', (req, res) => {
     Order.find()
         .select('_id product quantity')
+        .populate('product', 'name price')
         .exec()
         .then(order => {
             res.status(200).json({
@@ -85,6 +86,7 @@ router.get('/:orderId', (req, res) => {
     const id = req.params.orderId;
     Order.findById(id)
         .select('_id product quantity')
+        .populate('product', 'name price')
         .exec()
         .then(order => {
             if (order) {
