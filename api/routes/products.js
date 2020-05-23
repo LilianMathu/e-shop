@@ -23,7 +23,6 @@ const fileFilter = (req, file, cb) => {
         //rejecting a file syntax
         cb(null, false);
     }
-
 };
 
 // Initialize multer
