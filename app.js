@@ -10,7 +10,7 @@ const app = express();
 app.use(bodyParser.urlencoded( { extended: false }));
 app.use(bodyParser.json());
 app.use(logger('tiny'));
-
+app.use('/uploads', express.static('uploads'));
 
 // Import routes
 const productRoutes = require('./api/routes/products');

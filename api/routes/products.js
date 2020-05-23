@@ -45,7 +45,8 @@ router.post('/', upload.single('productImage'), (req, res) => {
     console.log(req.file);
     const product = new Product({
         name: req.body.name,
-        price: req.body.price
+        price: req.body.price,
+        productImage: req.file.path
     });
     product.save()
         .then(product => {
@@ -55,6 +56,7 @@ router.post('/', upload.single('productImage'), (req, res) => {
                     name: product.name,
                     price: product.price,
                     _id: product._id,
+                    productImage: product.productImage,
                     request: {
                         type: 'GET',
                         url: 'http://localhost:5000/products' + product._id
@@ -71,7 +73,7 @@ router.post('/', upload.single('productImage'), (req, res) => {
 //GET route
 router.get('/', (req, res) => {
     Product.find()
-        .select('_id name price')
+        .select('_id name price productImage')
         .exec()
         .then(products => {
             const response = {
@@ -81,6 +83,7 @@ router.get('/', (req, res) => {
                         name: products.name,
                         price: products.price,
                         _id: products._id,
+                        productImage: products.productImage,
                         request: {
                             type: 'GET',
                             url: 'http://localhost:5000/products/' + products._id
@@ -100,7 +103,7 @@ router.get('/', (req, res) => {
 router.get('/:productId', (req, res) => {
     const id = req.params.productId;
     Product.findById(id)
-        .select('_id name price')
+        .select('_id name price productImage')
         .exec()
         .then(product => {
             if (product) {
@@ -110,6 +113,7 @@ router.get('/:productId', (req, res) => {
                         _id: product._id,
                         name: product.name,
                         price: product.price,
+                        productImage: product.productImage,
                         request: {
                             type: 'GET',
                             url: 'http://localhost:5000/products' + product._id
@@ -141,6 +145,7 @@ router.patch('/:productId', (req, res) => {
                     _id: product._id,
                     name: product.name,
                     price: product.price,
+                    productImage: product.productImage,
                     request: {
                         type: 'GET',
                         url: 'http://localhost:5000/products' + product._id
