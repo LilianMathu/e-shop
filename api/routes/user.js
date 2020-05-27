@@ -1,6 +1,5 @@
 const express = require('express');
-const router = express.Router;
-const mongoose = require('mongoose');
+const router = express.Router();
 const bcrypt = require('bcrypt');
 
 // import models
@@ -8,9 +7,9 @@ const User = require('../models/User');
 
 // Route
 router.post('/signup', (req, res) => {
-    bcrypt.hash(req.body.email, 10, (err, hash) => {
+    bcrypt.hash(req.body.password, 10, (err, hash) => {
         if(err) {
-            res.status(500).json({ err });
+           return res.status(500).json({ err });
         } else {
             const user = new User({
                 email: req.body.email,
@@ -19,6 +18,7 @@ router.post('/signup', (req, res) => {
 
             user.save()
             .then(user => {
+                console.log(user);
                 res.status(201).json({
                     message: "User created",
                     user
@@ -26,8 +26,10 @@ router.post('/signup', (req, res) => {
             })
             .catch(error => {
                 res.status(500).json({ error });
-            })
+            });
         }
-    })
+    });
 
 });
+
+module.exports = router;
