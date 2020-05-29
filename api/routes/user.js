@@ -7,29 +7,69 @@ const User = require('../models/User');
 
 // Route
 router.post('/signup', (req, res) => {
-    bcrypt.hash(req.body.password, 10, (err, hash) => {
-        if(err) {
-           return res.status(500).json({ err });
-        } else {
-            const user = new User({
-                email: req.body.email,
-                password: hash
+    User.find({ email: req.body.email })
+    .exec()
+    .then(user => {
+        if(user.length >= 1) {
+            return res.status(409).json({
+                message: 'mail exist'
             });
-
-            user.save()
-            .then(user => {
-                console.log(user);
-                res.status(201).json({
-                    message: "User created",
-                    user
-                });
-            })
-            .catch(error => {
-                res.status(500).json({ error });
+        } else {
+            bcrypt.hash(req.body.password, 10, (err, hash) => {
+                if(err) {
+                   return res.status(500).json({ err });
+                } else {
+                    const user = new User({
+                        email: req.body.email,
+                        password: hash
+                    });
+        
+                    user.save()
+                    .then(user => {
+                        console.log(user);
+                        res.status(201).json({
+                            message: "User created",
+                            user
+                        });
+                    })
+                    .catch(error => {
+                        res.status(500).json({ error });
+                    });
+                }
             });
         }
-    });
-
+    })
 });
+
+// GET route
+router.get('/', (req, res)=> {
+    User.find()
+    .select('_id email')
+    .exec()
+    .then(users => {
+        res.status(200).json({
+            _id: users._id,
+            email: users.email
+        });
+    })
+    .catch(error => {
+        res.status(500).json({ error });
+    });
+})
+
+
+// Delete route
+router.delete('/:userId', (req, res) => {
+    User.remove({_id: req.params.id})
+    .exec()
+    .then(user => {
+        res.status(200).json({
+            message: 'user deleted'
+        });
+    })
+    .catch(error => {
+        res.status(500).json({ error });
+    }); 
+})
 
 module.exports = router;
