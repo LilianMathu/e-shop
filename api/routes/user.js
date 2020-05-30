@@ -1,13 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 // import models
 const User = require('../models/User');
 
 // Route
 router.post('/signup', (req, res) => {
-    User.find({ email: req.body.email })
+    User.findOne({ email: req.body.email })
     .exec()
     .then(user => {
         if(user.length >= 1) {
@@ -39,11 +40,52 @@ router.post('/signup', (req, res) => {
             });
         }
     })
+    .catch(error => {
+        res.status(500).json({ error });
+    });
 });
+
+// Login route
+router.post('/login', (req, res) => {
+    User.findOne({email: req.body.email})
+    .exec()
+    .then(user => {
+        if(user.length < 1) {
+            return res.status(401).json({
+                message: "auth failed"
+            });
+        }
+        bcrypt.compare(req.body.password, user.password, (err, result) => {
+            // the err is not as a result of wrong password but an error in the comparison process
+            if(err) {
+                res.status(401).json({
+                    message: "Auth failed"
+                });
+            }
+            if(result) {
+                return res.status(200).json({
+                    message: "Auth successful"
+                });
+            }
+
+            // In case of a wrong password or email address, this code is run
+            res.status(401).json({
+                message: "Incorrect password"
+            });
+        });
+    })
+    .catch(error => {
+        res.status(500).json({ 
+            message: "failed",
+            error 
+        });
+    });
+})
+
 
 // GET route
 router.get('/', (req, res)=> {
-    User.find()
+    User.findOne()
     .select('_id email')
     .exec()
     .then(users => {
