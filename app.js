@@ -18,7 +18,7 @@ const orderRoutes = require('./api/routes/orders');
 const userRoutes = require('./api/routes/user');
 
 // Setup database
-mongoose.connect(db, { useNewUrlParser: true,  useUnifiedTopology: true})
+mongoose.connect(db, { useNewUrlParser: true,  useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
     .then(() => {
         console.log('connected successfully');
     }).catch(error => {

@@ -82,7 +82,7 @@ router.get('/', (req, res) => {
                     return {
                         name: products.name,
                         price: products.price,
-                        _id: products._id,
+                         _id: products._id,
                         productImage: products.productImage,
                         request: {
                             type: 'GET',
@@ -136,7 +136,7 @@ router.patch('/:productId', (req, res) => {
     for (const ops of req.body) {
         updateOps[ops.propName] = ops.value;
     }
-    Product.update({ _id: id }, { $set: updateOps })
+    Product.updateOne({ _id: id }, { $set: updateOps })
         .exec()
         .then(product => {
             res.status(200).json({
@@ -162,7 +162,7 @@ router.patch('/:productId', (req, res) => {
 // DELETE route
 router.delete('/:productId', (req, res) => {
     const id = req.params.productId;
-    Product.remove({ _id: id })
+    Product.deleteOne({ _id: id })
         .exec()
         .then(product => {
             res.status(200).json(product)

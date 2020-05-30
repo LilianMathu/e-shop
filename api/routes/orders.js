@@ -113,7 +113,7 @@ router.get('/:orderId', (req, res) => {
 // DELETE routes
 router.delete('/:orderId', (req, res) => {
     const id = req.params.orderId;
-    Order.remove({_id: id})
+    Order.deleteOne({_id: id})
     .exec()
     .then(order => {
         res.status(200).json({
