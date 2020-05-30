@@ -47,10 +47,16 @@ router.get('/', (req, res)=> {
     .select('_id email')
     .exec()
     .then(users => {
-        res.status(200).json({
-            _id: users._id,
-            email: users.email
-        });
+        const response = {
+            count: users.length,
+            users: users.map(users => {
+                return {
+                    _id: users._id,
+                    email: users.email
+                };
+            })
+        };
+        res.status(200).json({ response     });
     })
     .catch(error => {
         res.status(500).json({ error });
@@ -60,7 +66,8 @@ router.get('/', (req, res)=> {
 
 // Delete route
 router.delete('/:userId', (req, res) => {
-    User.remove({_id: req.params.id})
+    const id = req.params.userId;
+    User.deleteOne({_id: id})
     .exec()
     .then(user => {
         res.status(200).json({
