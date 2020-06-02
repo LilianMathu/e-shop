@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
+const checkAuth = require('../middleware/check-auth');
 
 // Storage of files
 const storage = multer.diskStorage({
@@ -41,7 +42,7 @@ const Product = require('../models/Products');
 // the routes
 
 // POST route
-router.post('/', upload.single('productImage'), (req, res) => {
+router.post('/', checkAuth, upload.single('productImage'), (req, res) => {
     console.log(req.file);
     const product = new Product({
         name: req.body.name,
