@@ -124,7 +124,8 @@ router.delete('/:userId', (req, res) => {
     .exec()
     .then(user => {
         res.status(200).json({
-            message: 'user deleted'
+            message: 'user deleted',
+            user
         });
     })
     .catch(error => {
