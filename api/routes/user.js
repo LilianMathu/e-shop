@@ -18,7 +18,10 @@ router.post('/signup', (req, res) => {
         } else {
             bcrypt.hash(req.body.password, 10, (err, hash) => {
                 if(err) {
-                   return res.status(500).json({ err });
+                   return res.status(500).json({ 
+                    message: "bcrypt errors",   
+                    err 
+                });
                 } else {
                     const user = new User({
                         email: req.body.email,
@@ -34,14 +37,20 @@ router.post('/signup', (req, res) => {
                         });
                     })
                     .catch(error => {
-                        res.status(500).json({ error });
+                        res.status(500).json({ 
+                            message: "save failed",
+                            error 
+                        });
                     });
                 }
             });
         }
     })
     .catch(error => {
-        res.status(500).json({ error });
+        res.status(500).json({ 
+            message: "route failed",
+            error 
+        });
     });
 });
 
@@ -96,7 +105,7 @@ router.post('/login', (req, res) => {
 
 // GET route
 router.get('/', (req, res)=> {
-    User.findOne()
+    User.find()
     .select('_id email')
     .exec()
     .then(users => {
